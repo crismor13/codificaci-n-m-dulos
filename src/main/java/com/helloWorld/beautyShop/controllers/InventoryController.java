@@ -1,7 +1,11 @@
 package com.helloWorld.beautyShop.controllers;
 
+import com.helloWorld.beautyShop.DTOs.VisitorLoginForm;
 import com.helloWorld.beautyShop.DTOs.VisitorRegisterForm;
+import com.helloWorld.beautyShop.models.Product;
+import com.helloWorld.beautyShop.DTOs.ProductInventoryForm;
 import com.helloWorld.beautyShop.models.User;
+import com.helloWorld.beautyShop.services.ProductService;
 import com.helloWorld.beautyShop.services.VisitorService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -13,71 +17,63 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @Slf4j
 public class InventoryController {
 
-
     @Autowired
-    VisitorService visitorService;
+    ProductService productService;
 
 
-    @GetMapping({"/login", "/"})
-    public String login(Model model) {
-        return "login";
-    }
-
-    @GetMapping("/forgot-password.html")
-    public String forgotPassword(Model model) {
-        return "forgot-password";
-    }
-
-    @GetMapping("/register")
+    @GetMapping("/inventory")
     public String register(Model model) {
-        model.addAttribute("visitorForm", new VisitorRegisterForm());
-        return "register";
+        List<Product> products = productService.getAllProducts();
+        model.addAttribute("products", products);
+        model.addAttribute("productForm", new ProductInventoryForm());
+        return "inventory";
     }
 
-    @GetMapping("/home")
-    public String home(Model model, HttpSession session) {
-        model.addAttribute("visitorForm", new VisitorRegisterForm());
-
-        if (visitorService.isAuthenticated(session)) {
-
-            return "home";
-
-        }
-        return "404";
-    }
-
-    @PostMapping("/register")
-    public String createEmployee(@Valid @ModelAttribute("visitorForm") VisitorRegisterForm visitorForm,
-                                 BindingResult bindingResult, HttpSession session, RedirectAttributes redirectAttributes){
-
-
-        log.info(visitorForm.toString());
-
+    @PostMapping("/inventory")
+    public String addOrUpdateProduct(@Valid @ModelAttribute("productForm") ProductInventoryForm productInventoryForm,
+                            BindingResult bindingResult, HttpSession session, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             System.out.println(bindingResult.toString());
-            return "register";
+            return "inventory";
         }
 
-        User newUser = new User(
-                visitorForm.getUserName(),
-                visitorForm.getPassword()
+        if ("editForm".equals(productInventoryForm.getFormType())) {
+            Product updatedProduct = new Product(
+                    productInventoryForm.getName(),
+                    productInventoryForm.getDescription(),
+                    productInventoryForm.getPrice(),
+                    productInventoryForm.getQuantity()
+            );
+            productService.updateProduct(updatedProduct, productInventoryForm.getId());
+            return  "redirect:/inventory";
+
+        }
+
+        Product newProduct = new Product(
+                productInventoryForm.getName(),
+                productInventoryForm.getDescription(),
+                productInventoryForm.getPrice(),
+                productInventoryForm.getQuantity()
         );
 
-        try{
-            visitorService.saveUser(newUser);
-            session.setAttribute("isUserAuthenticated", true);
-            session.setAttribute("visitor", newUser);
-            return  "redirect:/home";
-        }catch (Exception e){
-            log.error(e.getMessage());
-            return  "404";
-        }
+        productService.saveProduct(newProduct);
+
+        return  "redirect:/inventory";
+    }
+
+    @PostMapping("/inventory/delete")
+    public String deleteProduct(@RequestParam("delete") Long productId) {
+        productService.deleteProduct(productId); // Delete product by id
+        return "redirect:/inventory";
     }
 
 

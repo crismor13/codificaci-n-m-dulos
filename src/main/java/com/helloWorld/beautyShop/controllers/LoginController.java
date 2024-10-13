@@ -49,13 +49,26 @@ public class LoginController {
 
         try{
             session.setAttribute("isUserAuthenticated", true);
-            session.setAttribute("visitor", visitorService.getUserByUsername(visitorForm.getUserName()).get());
+            User loggedUser = visitorService.getUserByUsername(visitorForm.getUserName()).get();
+            log.info("Username: {}", visitorForm.getUserName());
+            log.info("loggedUser: {}", loggedUser.toString());
+            session.setAttribute("visitor", loggedUser);
             return  "redirect:/home";
         }catch (Exception e){
             log.error(e.getMessage());
-            return  "404";
+            return  "redirect:/404";
         }
     }
+
+    @PostMapping("/logout")
+    public String logout(HttpSession session) {
+        // Invalidate the session
+        session.invalidate();
+
+        // Redirect to login page or home page after logout
+        return "redirect:/login";
+    }
+
 
     @GetMapping("/forgot-password.html")
     public String forgotPassword(Model model) {
@@ -93,7 +106,7 @@ public class LoginController {
             return  "redirect:/home";
         }catch (Exception e){
             log.error(e.getMessage());
-            return  "404";
+            return  "redirect:/404";
         }
     }
 

@@ -1,7 +1,11 @@
 package com.helloWorld.beautyShop.controllers;
 
 import com.helloWorld.beautyShop.DTOs.VisitorRegisterForm;
+import com.helloWorld.beautyShop.models.Product;
+import com.helloWorld.beautyShop.models.Sale;
 import com.helloWorld.beautyShop.models.User;
+import com.helloWorld.beautyShop.services.ProductService;
+import com.helloWorld.beautyShop.services.SaleService;
 import com.helloWorld.beautyShop.services.VisitorService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -15,70 +19,30 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Controller
 @Slf4j
 public class HomeController {
 
-
     @Autowired
-    VisitorService visitorService;
-
-
-    @GetMapping({"/login", "/"})
-    public String login(Model model) {
-        return "login";
-    }
-
-    @GetMapping("/forgot-password.html")
-    public String forgotPassword(Model model) {
-        return "forgot-password";
-    }
-
-    @GetMapping("/register")
-    public String register(Model model) {
-        model.addAttribute("visitorForm", new VisitorRegisterForm());
-        return "register";
-    }
+    ProductService productService;
+    @Autowired
+    SaleService saleService;
 
     @GetMapping("/home")
-    public String home(Model model, HttpSession session) {
-        model.addAttribute("visitorForm", new VisitorRegisterForm());
+    public String home(Model model) {
 
-        if (visitorService.isAuthenticated(session)) {
+        List<Product> lowStockProducts = productService.getLowStockProducts(15);
+        List<Sale> recentSales = saleService.getMostRecentSales();
 
-            return "home";
+        // Add the data to the model
+        model.addAttribute("lowStockProducts", lowStockProducts);
+        model.addAttribute("recentSales", recentSales);
 
-        }
-        return "404";
+        // Return the name of the Thymeleaf template (home.html)
+        return "home";
     }
-
-    @PostMapping("/register")
-    public String createEmployee(@Valid @ModelAttribute("visitorForm") VisitorRegisterForm visitorForm,
-                                 BindingResult bindingResult, HttpSession session, RedirectAttributes redirectAttributes){
-
-
-        log.info(visitorForm.toString());
-
-        if (bindingResult.hasErrors()) {
-            System.out.println(bindingResult.toString());
-            return "register";
-        }
-
-        User newUser = new User(
-                visitorForm.getUserName(),
-                visitorForm.getPassword()
-        );
-
-        try{
-            visitorService.saveUser(newUser);
-            session.setAttribute("isUserAuthenticated", true);
-            session.setAttribute("visitor", newUser);
-            return  "redirect:/home";
-        }catch (Exception e){
-            log.error(e.getMessage());
-            return  "404";
-        }
-    }
-
 
 }

@@ -1,100 +1,136 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+
+<!--<head>-->
+
+<!--    <meta charset="utf-8">-->
+<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+<!--    <meta name="description" content="">-->
+<!--    <meta name="author" content="">-->
+
+<!--    <title>SB Admin 2 - Login</title>-->
+
+<!--    &lt;!&ndash; Custom fonts for this template&ndash;&gt;-->
+<!--    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">-->
+<!--    <link-->
+<!--        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"-->
+<!--        rel="stylesheet">-->
+
+<!--    &lt;!&ndash; Custom css for this template&ndash;&gt;-->
+<!--    <link href="css/sb-admin-2.min.css" rel="stylesheet" type="text/css">-->
+
+<!--</head>-->
+
+<!--<body class="bg-gradient-primary">-->
+
+<!--    <div class="container">-->
+
+<!--        &lt;!&ndash; Outer Row &ndash;&gt;-->
+<!--        <div class="row justify-content-center">-->
+
+<!--            <div class="col-xl-10 col-lg-12 col-md-9">-->
+
+<!--                <div class="card o-hidden border-0 shadow-lg my-5">-->
+<!--                    <div class="card-body p-0">-->
+<!--                        &lt;!&ndash; Nested Row within Card Body &ndash;&gt;-->
+<!--                        <div class="row">-->
+<!--                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>-->
+<!--                            <div class="col-lg-6">-->
+<!--                                <div class="p-5">-->
+<!--                                    <div class="text-center">-->
+<!--                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>-->
+<!--                                    </div>-->
+
+<!--                                    <form th:object="${loginForm}" class="user" action="/login" method="post">-->
+<!--                                        <div class="form-group">-->
+<!--                                            <input type="text" class="form-control form-control-user" id="exampleFirstName"-->
+<!--                                                   placeholder="Username" name="userName" th:field="*{userName}">-->
+<!--                                            <p th:if="${#fields.hasErrors('userName')}" class="text-danger" th:errors="*{userName}">Name Error</p>-->
+<!--                                        </div>-->
+<!--                                        <div class="form-group">-->
+<!--                                            <input type="text" class="form-control form-control-user" id="exampleId"-->
+<!--                                                   placeholder="Id number" name="password" th:field="*{password}">-->
+<!--                                            <p th:if="${#fields.hasErrors('password')}" class="text-danger" th:errors="*{password}">Id Error</p>-->
+<!--                                        </div>-->
+<!--                                        <input type="submit" value="Register Account" class="btn btn-primary btn-user btn-block">-->
+<!--                                        <p th:if="${loginError != null}" class="text-danger">-->
+<!--                                            <span class="text-danger"  th:text="${loginError}"></span>-->
+<!--                                        </p>-->
+
+<!--                                        <hr>-->
+<!--                                        <a href="#" class="btn btn-google btn-user btn-block">-->
+<!--                                            <i class="fab fa-google fa-fw"></i> Login with Google-->
+<!--                                        </a>-->
+<!--                                        <a href="#" class="btn btn-facebook btn-user btn-block">-->
+<!--                                            <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook-->
+<!--                                        </a>-->
+<!--                                    </form>-->
+<!--                                    <hr>-->
+<!--                                    <div class="text-center">-->
+<!--                                        <a class="small" href="/forgot-password.html">Forgot Password?</a>-->
+<!--                                    </div>-->
+<!--                                    <div class="text-center">-->
+<!--                                        <a class="small" href="/register">Create an Account!</a>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--            </div>-->
+
+<!--        </div>-->
+
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Bootstrap core JavaScript&ndash;&gt;-->
+<!--    <script src="vendor/jquery/jquery.min.js"></script>-->
+<!--    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>-->
+
+<!--    &lt;!&ndash; Core plugin JavaScript&ndash;&gt;-->
+<!--    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>-->
+
+<!--    &lt;!&ndash; Custom scripts for all pages&ndash;&gt;-->
+<!--    <script src="js/sb-admin-2.min.js"></script>-->
+
+<!--</body>-->
+
+<!--</html>-->
+
+
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>SB Admin 2 - Login</title>
-
-    <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link th:href="@{/css/login.css}" rel="stylesheet" />
 </head>
+<body>
+<section class="login">
+    <h1>Login</h1>
+    <form th:object="${loginForm}" class="user" action="/login" method="post">
 
-<body class="bg-gradient-primary">
+        <input type="text" class="form-control form-control-user" id="username" placeholder="Username" name="userName" th:field="*{userName}">
+        <p th:if="${#fields.hasErrors('userName')}" class="error-text" th:errors="*{userName}"></p>
 
-    <div class="container">
 
-        <!-- Outer Row -->
-        <div class="row justify-content-center">
+        <input type="password" class="form-control form-control-user" id="password" placeholder="Password" name="password" th:field="*{password}">
+        <p th:if="${#fields.hasErrors('password')}" class="error-text" th:errors="*{password}"></p>
 
-            <div class="col-xl-10 col-lg-12 col-md-9">
-
-                <div class="card o-hidden border-0 shadow-lg my-5">
-                    <div class="card-body p-0">
-                        <!-- Nested Row within Card Body -->
-                        <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                            <div class="col-lg-6">
-                                <div class="p-5">
-                                    <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
-                                    </div>
-
-                                    <form th:object="${loginForm}" class="user" action="/login" method="post">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control form-control-user" id="exampleFirstName"
-                                                   placeholder="Username" name="userName" th:field="*{userName}">
-                                            <p th:if="${#fields.hasErrors('userName')}" class="text-danger" th:errors="*{userName}">Name Error</p>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="text" class="form-control form-control-user" id="exampleId"
-                                                   placeholder="Id number" name="password" th:field="*{password}">
-                                            <p th:if="${#fields.hasErrors('password')}" class="text-danger" th:errors="*{password}">Id Error</p>
-                                        </div>
-                                        <input type="submit" value="Register Account" class="btn btn-primary btn-user btn-block">
-                                        <p th:if="${loginError != null}" class="text-danger">
-                                            <span class="text-danger"  th:text="${loginError}"></span>
-                                        </p>
-
-                                        <hr>
-                                        <a href="#" class="btn btn-google btn-user btn-block">
-                                            <i class="fab fa-google fa-fw"></i> Login with Google
-                                        </a>
-                                        <a href="#" class="btn btn-facebook btn-user btn-block">
-                                            <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                                        </a>
-                                    </form>
-                                    <hr>
-                                    <div class="text-center">
-                                        <a class="small" href="/forgot-password.html">Forgot Password?</a>
-                                    </div>
-                                    <div class="text-center">
-                                        <a class="small" href="/register">Create an Account!</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
+        <div th:if="${loginError}">
+            <p class="error-text" th:text="${loginError}"></p>
         </div>
 
-    </div>
+        <div class="text-center">
+            <a class="small" href="/register">Create an Account!</a>
+        </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <button type="submit">Login</button>
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
-
+    </form>
+</section>
 </body>
-
 </html>

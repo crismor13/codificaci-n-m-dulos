@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<!--    <link href="../../static/css/home.css" rel="stylesheet" type="text/css">-->
+</head>
+<body>
+    <!-- fragments/fragments.html -->
+    <header th:fragment="navbar">
+        <nav>
+            <ul>
+                <li><a th:href="@{/home}">Home</a></li>
+                <li><a th:href="@{/inventory}">Inventory</a></li>
+                <li><a th:href="@{/sales}">Sales</a></li>
+                <li><a th:href="@{/accounting}">Accounting</a></li>
+                <li class="logout-item">
+
+                    <form th:action="@{/logout}" method="post" >
+                        <button type="submit" class="logout-button">Logout</button>
+                    </form>
+
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+</body>
+</html>

@@ -2,11 +2,13 @@ package com.helloWorld.beautyShop.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Product {
 
     @Id
@@ -25,5 +27,11 @@ public class Product {
     @Column(nullable = false)
     private Integer quantity;
 
+    public Product(String name, String description, BigDecimal price, Integer quantity) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.quantity = quantity;
+    }
 }
 

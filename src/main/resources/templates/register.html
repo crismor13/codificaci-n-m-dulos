@@ -17,7 +17,7 @@
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
-    <!-- Custom styles for this template-->
+    <!-- Custom css for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
@@ -45,7 +45,7 @@
                                 </div>
                                 <div class="form-group">
                                     <input type="text" class="form-control form-control-user" id="exampleId"
-                                           placeholder="Id number" name="password" th:field="*{password}">
+                                           placeholder="Password" name="password" th:field="*{password}">
                                     <p th:if="${#fields.hasErrors('password')}" class="text-danger" th:errors="*{password}">Id Error</p>
                                 </div>
                                 <input type="submit" value="Register Account" class="btn btn-primary btn-user btn-block">

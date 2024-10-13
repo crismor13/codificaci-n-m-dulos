@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management</title>
+    <link th:href="@{/css/inventory.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/header.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+<!-- Navbar Fragment -->
+<header th:replace="~{fragments/fragments :: navbar}"></header>
+
+<main>
+    <section class="inventory">
+        <h1>Inventory</h1>
+
+        <div class="actions">
+            <form th:object="${productForm}" th:action="@{/inventory}" method="post">
+                <input type="hidden" name="formType" value="creationForm">
+                <input type="text" name="name" placeholder="Product Name" required>
+                <input type="text" name="description" placeholder="Description" required>
+                <input type="number" name="price" placeholder="Price" step=".01" required>
+                <input type="number" name="quantity" placeholder="Stock" required>
+                <button type="submit">Add Product</button>
+            </form>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${products}">
+                <td th:text="${product.id}"></td>
+                <td th:text="${product.name}"></td>
+                <td th:text="${product.description}"></td>
+                <td th:text="${product.price}"></td>
+                <td th:text="${product.quantity}"></td>
+                <td>
+                    <form th:action="@{/inventory/delete}" method="post" style="display:inline;">
+                        <input type="hidden" name="formType" value="buttonForm">
+                        <button type="button" class="edit-btn" name="edit"
+                                th:data-id="${product.id}"
+                                th:data-name="${product.name}"
+                                th:data-description="${product.description}"
+                                th:data-price="${product.price}"
+                                th:data-stock="${product.quantity}">
+                            Edit
+                        </button>
+                        <button type="submit" name="delete" th:value="${product.id}">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<!-- Modal Structure -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Edit Product</h2>
+        <form th:object="${productForm}" id="editForm" th:action="@{/inventory}" method="post">
+            <input type="hidden" name="formType" value="editForm">
+            <input type="hidden" id="editProductId" name="id">
+            <label for="editProductName">Name:</label>
+            <input type="text" id="editProductName" name="name" th:field="*{name}" required><br><br>
+            <p th:if="${#fields.hasErrors('name')}" class="error-text" th:errors="*{name}"></p>
+            <label for="editProductDescription">Description:</label>
+            <input type="text" id="editProductDescription" name="description" th:field="*{description}" required><br><br>
+            <p th:if="${#fields.hasErrors('description')}" class="error-text" th:errors="*{description}"></p>
+            <label for="editProductPrice">Price:</label>
+            <input type="number" id="editProductPrice" name="price" step=".01" th:field="*{price}" required><br><br>
+            <p th:if="${#fields.hasErrors('price')}" class="error-text" th:errors="*{price}"></p>
+            <label for="editProductStock">Stock:</label>
+            <input type="number" id="editProductStock" name="stock" th:field="*{quantity}" required><br><br>
+            <p th:if="${#fields.hasErrors('quantity')}" class="error-text" th:errors="*{quantity}"></p>
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+<!-- JavaScript for Modal Functionality -->
+<script>
+    // Get modal element and close button
+    var modal = document.getElementById("editModal");
+    var span = document.getElementsByClassName("close")[0];
+
+    // Get all edit buttons
+    var editButtons = document.getElementsByClassName("edit-btn");
+
+    // Loop through all edit buttons
+    Array.prototype.forEach.call(editButtons, function(btn) {
+        btn.addEventListener("click", function() {
+            // Get product data from the button's data attributes
+            var productId = this.getAttribute("data-id");
+            var productName = this.getAttribute("data-name");
+            var productDescription = this.getAttribute("data-description");
+            var productPrice = this.getAttribute("data-price");
+            var productStock = this.getAttribute("data-stock");
+
+            // Set modal input values
+            document.getElementById("editProductId").value = productId;
+            document.getElementById("editProductName").value = productName;
+            document.getElementById("editProductDescription").value = productDescription;
+            document.getElementById("editProductPrice").value = productPrice;
+            document.getElementById("editProductStock").value = productStock;
+
+            // Show modal
+            modal.style.display = "block";
+        });
+    });
+
+    // Close the modal when the user clicks the close button
+    span.onclick = function() {
+        modal.style.display = "none";
+    };
+
+    // Close the modal if the user clicks outside of the modal
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    };
+</script>
+</body>
+</html>

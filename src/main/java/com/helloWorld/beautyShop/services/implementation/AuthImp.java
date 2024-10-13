@@ -3,9 +3,11 @@ package com.helloWorld.beautyShop.services.implementation;
 import com.helloWorld.beautyShop.models.User;
 import com.helloWorld.beautyShop.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class AuthImp implements AuthService {
 
     @Autowired

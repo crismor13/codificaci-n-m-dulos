@@ -1,0 +1,45 @@
+header {
+    background-color: #343a40;
+    color: white;
+    padding: 1rem 2rem;
+    text-align: center;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.logout-item {
+    display: inline-flex; /* Ensures the button aligns properly */
+    align-items: center; /* Vertically centers the button */
+}
+
+
+
+nav ul li {
+    display: flex;
+    align-items: center;
+}
+
+nav ul li a, .logout-button {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.logout-button {
+    background: none;
+    border: none;
+    font-size: 1em;
+    padding: 0.7rem 1rem;
+}
+
+nav ul li a:hover, .logout-button:hover {
+    background-color: #495057;
+}
