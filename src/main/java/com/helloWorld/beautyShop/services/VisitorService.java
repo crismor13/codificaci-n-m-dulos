@@ -15,4 +15,6 @@ public interface VisitorService {
     Optional<User> getUserById(Long id);
 
     Optional<User> getUserByUsername(String username);
+
+    boolean existsByUsername(String userName);
 }

@@ -1,5 +1,6 @@
 package com.helloWorld.beautyShop.models;
 
+import com.helloWorld.beautyShop.services.UniqueUsername;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, length = 50)
+    @Column(unique = true)
     private String username;
 
     @Column(length = 50)

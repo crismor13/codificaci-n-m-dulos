@@ -43,4 +43,9 @@ public class VisitorImp implements VisitorService {
     public  Optional<User> getUserByUsername(String username) {
         return visitorRepository.findByUsername(username);
     }
+
+    @Override
+    public boolean existsByUsername(String userName) {
+        return visitorRepository.existsByUsername(userName);
+    }
 }

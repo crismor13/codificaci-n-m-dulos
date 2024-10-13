@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface VisitorRepository extends CrudRepository<User, Long> {
     Optional<User> findByUsername(String username);
+    boolean existsByUsername(String userName);
 }
